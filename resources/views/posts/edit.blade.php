@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Create @endsection
+@section('title') Edit @endsection
 
 @section('content')
        
@@ -8,12 +8,12 @@
         @csrf
         <div class="mb-3">
             <label for="email" class="form-label">Title</label>
-            <input type="text" class="form-control" name="email" id="">
+            <input type="text" class="form-control" name="email" id="" value="{{$title}}">
 
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-<textarea name="description" class="form-control" id="" cols="30" rows="10"></textarea>
+<textarea name="description" class="form-control" id="" cols="30" rows="10">{{$createdAt}}</textarea>
         </div>
         <div class="mb-3">
             <label for="postCreator" class="form-label">Post Creator</label>
