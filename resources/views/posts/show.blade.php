@@ -11,11 +11,11 @@
       Post info
     </div>
     <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <h5 class="card-title"><b>Title:-</b> {{$post->title}}</h5>
+      <p class="card-text"><b>Description:-</b>{{$post->description}}</p>
       
     </div>
-  </div>
+  </div>  
 
   <div class="card mt-5">
     <div class="card-header">
@@ -23,9 +23,9 @@
     </div>
     <div class="card-body">
       
-      <p class="card-text"><b>Name:-</b> {{$name}}</p>
-      <p class="card-text"><b>Email:-</b> {{$name."@gmail.com"}}</p>
-      <p class="card-text"><b>Created At:- {{$createdAt}}</b> </p>
+      <p class="card-text"><b>Name:-</b> {{$post->user->name}}</p>
+      <p class="card-text"><b>Email:-</b> {{$post->user->email}}</p>
+      <p class="card-text"><b>Created At:-</b> {{$post->created_at->isoFormat('dddd Do of MMMM OY LTS')}} </p>
       
     </div>
   </div>

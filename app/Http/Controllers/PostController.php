@@ -3,47 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\User;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
 
-    public $posts = [
-        ['id' => 1, 'title' => 'first post', 'posted_by' => 'ahmed', 'created_at' => '2022-02-19 10:00:00'],
-        ['id' => 2, 'title' => 'second post', 'posted_by' => 'mohamed', 'created_at' => '2022-02-15 05:00:00'],
-    ];
-
+    
     public function index()
     {
-        
+        $posts=Post::all();
 
-        // dd($posts); //to stop excution and dump the $posts
+        $posts = Post::paginate(5);
+
         return view('posts.index',[
-            'posts' => $this->posts,
+            'posts' => $posts,
         ]);
     }
 
     public function create()
     {
-        return view('posts.create');
+
+
+        $users = User::all();
+        // dd($users);
+        return view('posts.create',
+    ['users'=>$users]);
     }
 
     public function show($postId)
     {
         
-        $posts = [
-            ['id' => 1, 'title' => 'first post', 'posted_by' => 'ahmed', 'created_at' => '2022-02-19 10:00:00'],
-            ['id' => 2, 'title' => 'second post', 'posted_by' => 'mohamed', 'created_at' => '2022-02-15 05:00:00'],
-        ];            
+        $post = Post::find($postId);           
        
-        foreach($posts as $post){
-            if ($post['id'] == $postId )
+        
                 return view('posts.show',[
-                'name' => $post['posted_by'],
-                'createdAt' => $post['created_at']
+                'post' => $post,
+                
                     
             ]);
 
-        }
+        
        
     }
     
@@ -53,24 +54,17 @@ class PostController extends Controller
 
     {
         // dd($postId);
-        $posts = [
-            ['id' => 1, 'title' => 'first post', 'posted_by' => 'ahmed', 'created_at' => '2022-02-19 10:00:00'],
-            ['id' => 2, 'title' => 'second post', 'posted_by' => 'mohamed', 'created_at' => '2022-02-15 05:00:00'],
-        ];            
+        $post = Post::find($postId);   
+        $users = User::all();       
+
+        return view('posts.edit',[
+            'post' => $post,
+            'users'=>$users
+            
+                
+        ]);
+
         
-        foreach($posts as $post){
-            if ($post['id'] == $postId )
-                return view('posts.edit',[
-                'title' => $post['title'],
-                'name' => $post['posted_by'],
-                'createdAt' => $post['created_at']
-                    
-            ]);
-
-        }
-
-        return view('posts.edit');
-       
     
     }
 
@@ -78,23 +72,47 @@ class PostController extends Controller
     {
         //fetch request data
         $requestData = request()->all();
-       // create new ID
-       $newID = sizeof($this->posts) + 1;
+        //insert into DB
 
-       //store request data in db
-       $newPost =  ['id' => $newID, 'title' => $requestData['title'], 'description' => $requestData['description'], 'posted_by' => $requestData['Post_Creator'], 'created_at' => '10/10/2020'];
 
-       // store new post on array
-       array_push($this->posts, $newPost);
-       return view('posts.index', [
-        'posts' =>  $this->posts
-    ]);
+
+        // dd($requestData);
+        Post::create($requestData);
+
+
+       return redirect()->route('posts.index');
     }
 
-    public function update()
+    public function update($postId)
     {
        
         $requestData = request()->all();
+
+        $post = Post::find($postId);
+        $post->title = $requestData['title'];
+        $post->description = $requestData['description'];
+        $post->user_id = $requestData['user_id'];
+
+        
+        $post->update();
+
+     
+        return redirect()->route('posts.index');
+    }
+
+    public function destroy($postId)
+    {
+       
+       
+
+        $post = Post::find($postId);
+        $post->delete();
+      
+      
+
+        
+        ;
+
      
         return redirect()->route('posts.index');
     }

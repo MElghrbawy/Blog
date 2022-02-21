@@ -4,29 +4,37 @@
 
 @section('content')
        
-    <form action="{{route('posts.store')}}" class="mt-5" method="POST">
-        @csrf
-        <div class="mb-3">
-            <label for="email" class="form-label">Title</label>
-            <input type="text" class="form-control" name="email" id="" value="{{$title}}">
-
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-<textarea name="description" class="form-control" id="" cols="30" rows="10">{{$createdAt}}</textarea>
-        </div>
-        <div class="mb-3">
-            <label for="postCreator" class="form-label">Post Creator</label>
-            <select name="postCreator" class="form-control" id="">
-                <option value="1">Sayed</option>
-                <option value="2">Ismael</option>
-                <option value="3">Mahmoud</option>
-            </select>
-
-        </div>
-
-        <button type="submit" class="btn btn-success">Submit</button>
-
-
-    </form>
+    
+    
+        <form action="{{route('posts.update',$post->id)}}" class="mt-5" method="POST">
+            @csrf
+            @method('put')
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" id="" value="{{$post->title}}">
+    
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+            <textarea name="description" class="form-control" id="" cols="30" rows="10" >{{$post->description}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="postCreator" class="form-label">Post Creator</label>
+                <select name="user_id" class="form-control" id="">
+                    @foreach($users as $user){
+                        
+                        <option value="{{$user->id}}">{{$user->name}}</option>
+    
+                    }
+                    @endforeach
+                    
+                    
+                </select>
+    
+            </div>
+    
+            <button type="submit" class="btn btn-success">Submit</button>
+    
+    
+        </form>
 @endsection
